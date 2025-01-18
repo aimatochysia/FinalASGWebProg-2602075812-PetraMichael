@@ -1,22 +1,26 @@
-migration
-seeeder
-faker
-controller
-middleware
-localiztion
-authentication
+## migration
+## seeeder
+## faker
+## controller
+## middleware
+## localiztion
+## authentication
 
 0. composer install 3x
 0. a. php artisan key:generate
 0. b. npm install trus npm run dev (npm run dev harus terus terusan)
 0. c. php artisan serve
+
+# model & migrate
 1. bikin model
 2. bikin migrations
 3. php artisan migrate
-3.a. cara rollback: php artisan migrate:rollback abis tu migrate lagi
+3. a. cara rollback: php artisan migrate:rollback abis tu migrate lagi
+
+# laravel ui
 4. composer require laravel/ui (buat scaffolding auth)
-4.a.ganti register & / login sama inputnya yg diminta
-4.b. return view auth.login di web.php ngeganti login doang
+4. a.ganti register & / login sama inputnya yg diminta
+4. b. return view auth.login di web.php ngeganti login doang
 5. buat viewnya (notif buat payment) payment.blade
 6. bikin routing post trus actionnya yg [] ke controller misal paymentControlle::class
 7. php artisan make:controller paymentController
@@ -31,19 +35,22 @@ authentication
 16. bikin pagination users
 17. Di view buat profile card
 18. di view home panggil foreach users as user dengan input user
+
+# faker & seeder
 19. buat faker sama seeder
 20. buat fungsi generate dari picsum.photos/200 trus save hasilnya ke link databse
 21. buat seeder dengan php artisan make:seeder UserSeeder
 22. ganti di DatabaseSeeder apapun itu fungsirandom dengan  $this->call(UserSeeder::class); (fungsinya hapus)
 23. php artisan db:seed
 
+# localization
 24. make localization
 25. php artisan lang:publish
 26. klo mau nambah language, copy folder en rename id
 27. tambahin di lang en di misal pagination
-28. tambahin di home <p>{{__('pagination.test') }}</p>
-29. routing ditambah Route::get('/locale/{lang}',[LocaleController::class,'setLocale']);
+28. tambahin di home < p>{{__('pagination.test') }}</ p>
+29. routing ditambah Route::get('/locale/{lang}',[ LocaleController::class,'setLocale']);
 30. jalanin command php artisan make:Controller LocaleController
-31. bikin function setLocale
+31. bikin function setLocale 
 32. bikin middleware php artisan make:Middleware LocaleMiddleware
 33. di bootstrap app.php tambahin middleware $middleware->web(append:['web', \App\Http\Middleware\LocaleMiddleware::class]); di bagian withMiddleware

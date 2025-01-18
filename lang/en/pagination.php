@@ -15,6 +15,6 @@ return [
 
     'previous' => '&laquo; Previous',
     'next' => 'Next &raquo;',
-    'test' => 'This is a test',
+    'test' => 'Test english',
 
 ];
