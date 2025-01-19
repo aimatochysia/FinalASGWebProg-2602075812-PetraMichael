@@ -71,7 +71,28 @@
 10. di bootstrap app.php tambahin middleware $middleware->web(append:['web', \App\Http\Middleware\LocaleMiddleware::class]); di bagian withMiddleware
 
 # friends
-1. buat table friends php artisan make:migration create_friends_table
-2. ganti isi migration friends tablenya
-3. tambahin ke user model belongs to many relation
+1. modify user table di migration dan controller tambahin row friends
+2. row frineds adalah array
 4. bikin controller php artisan make:controller FriendController
+5. modify user model buat fungsi fungsinya
+6. btw manggil user pake Auth::user();, trus diatas pake use Illuminate\Support\Facades\Auth;
+7. ganti seeder buat bikin fungsi generate dri user yg ada trus reseed.
+
+# profile
+1. add di app.blade.php api di dalem layout /profile
+2. tambah routing /profile
+3. buat profilecontroller
+4. buat profile blade
+
+# chat
+1. bikin migration chat php artisan make:migration create_chats_table
+2. migrate abis biki nmigration
+3. buat chat model php artisan make:model Chat
+4. ganti modelnya jadi kasitau relasinya
+5. buat controller php artisan make:controller ChatController
+6. modify controller
+7. buat frontend
+
+# search bar
+1. modify home.blade.php
+2. modify homeController.php

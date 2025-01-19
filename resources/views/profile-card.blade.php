@@ -5,7 +5,7 @@
 
     <div class="card-body">
         <!-- User Name -->
-        <h5 class="card-title">{{ $user->name }}</h5>
+        <h5 class="card-title">{{ $user->username }}</h5>
 
         <!-- Instagram Username -->
         <p class="card-text"><strong>Instagram:</strong> {{ '@' . $user->instagram_username }}</p>
@@ -32,17 +32,36 @@
         <!-- Gender -->
         <p class="card-text"><strong>Gender:</strong> {{ ucfirst($user->gender) }}</p>
 
-        <!-- Optional: Add any button or links -->
-        {{-- <a href="{{ route('user.profile', $user->id) }}" class="btn btn-primary">View Profile</a> --}}
+        <!-- friend-->
+        @if (Auth::check())
+            @php
+                $loggedInUser = Auth::user();
+                $isFriend = $loggedInUser->isFriend($user->id);
+            @endphp
+
+            @if ($loggedInUser->id !== $user->id) <!-- Skip for the current user -->
+                @if ($isFriend)
+                    <form action="{{ route('friends.remove', $user->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Unfriend</button>
+                    </form>
+                @else
+                    <form action="{{ route('friends.add', $user->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Add Friend</button>
+                    </form>
+                @endif
+            @endif
+        @endif
     </div>
 </div>
 
 <style>
     .card-main {
-    transition: transform 0.3s ease-in-out; /* Smooth transition */
+    transition: transform 0.3s ease-in-out;
 }
     .card-main:hover {
-        transform: scale(1.05); /* Zoom effect */
+        transform: scale(1.05);
     }
     .hobbies-tags {
         margin-top: 10px;

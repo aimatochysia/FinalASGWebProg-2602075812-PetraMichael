@@ -8,6 +8,15 @@
     <title>Document</title>
 </head>
 <body>
-    @yield('content')
+    {{-- Top Header Section --}}
+    <header>
+        @yield('top-header')
+    </header>
+    <main>
+        @yield('content')
+    </main>
+    <footer>
+        @yield('bottom-header')
+    </footer>
 </body>
 </html>

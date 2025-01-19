@@ -23,15 +23,27 @@ class UserSeeder extends Seeder
                 'gender' => $faker->randomElement(['male', 'female', 'other']),
                 'password' => Hash::make('password'), // Default password for all seeded users
                 'mobile_number' => $faker->numerify('##########'), // 10-digit random number
-                'price' => $faker->numberBetween(20000, 25000),
+                'price' => $faker->numberBetween(20000, 50000),
                 'profile_picture' => $this->fetchPicsumImageUrl(),
             ]);
             $numberOfHobbies = $faker->numberBetween(2, 5);
             for ($j = 0; $j < $numberOfHobbies; $j++) {
                 $user->hobbies()->create([
-                    'name' => $faker->word(),
+                    // 'name' => $faker->word(),
+                    'name' => $faker->randomElement(['basketball','baseball','cricket','soccer','programming','fashion','gardening']),
                 ]);
             }
+
+            // Add random friends (0-5 friends for each user)
+            $friendIds = User::where('id', '!=', $user->id) // Ensure we don't add the user themselves as a friend
+                ->inRandomOrder()
+                ->take($faker->numberBetween(0, 5))
+                ->pluck('id')
+                ->toArray();
+
+            // Assign friends
+            $user->friends = $friendIds;
+            $user->save();
         }
     }
 

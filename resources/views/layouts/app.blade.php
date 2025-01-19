@@ -1,4 +1,5 @@
 {{-- reources/views/layouts/app --}}
+{{-- THIS IS THE HEADER LAYOUT, JUST EDIT THIS FOR HEADER --}}
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -21,7 +22,8 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
+                    SocialMetta
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -37,6 +39,11 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
                         <!-- Authentication Links -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('profile') }}">
+                                {{ __('Profile') }}
+                            </a>
+                        </li>
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
@@ -76,6 +83,10 @@
         <main class="py-4">
             @yield('content')
         </main>
+        !-- Footer -->
+        <footer class="bg-dark text-white text-center py-3">
+            <p>&copy; {{ date('Y') }} SocialMetta. All rights reserved.</p>
+        </footer>
     </div>
 </body>
 </html>
