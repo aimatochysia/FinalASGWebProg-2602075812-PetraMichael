@@ -1,5 +1,5 @@
 <?php
-
+// <!-- lang/id/pagination -->
 return [
 
     /*

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+// <!-- app/http/controllers/localecontroller -->
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 

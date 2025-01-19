@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+// <!-- app/http/controllers/homecontroller -->
 class HomeController extends Controller
 {
     /**
@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(9);
         return view('home',compact('users'));
     }
 }

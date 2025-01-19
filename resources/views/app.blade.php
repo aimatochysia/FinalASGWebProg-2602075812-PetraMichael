@@ -1,3 +1,4 @@
+{{-- resources/views/app.blade --}}
 <!DOCTYPE html>
 <html lang="en">
 <head>

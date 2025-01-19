@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+// <!-- database/migrations/create user -->
 return new class extends Migration
 {
     /**
@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string("mobile_number");
             $table->integer("price");
+            $table->json('friends')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

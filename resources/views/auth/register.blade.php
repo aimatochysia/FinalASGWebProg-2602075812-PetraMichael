@@ -1,3 +1,4 @@
+{{-- reources/views/auth/register --}}
 @extends('layouts.app')
 
 @section('content')
@@ -90,12 +91,27 @@
                             </div>
                         </div>
 
-                        <!-- Price Field -->
+                        <!-- Display Generated Price -->
                         <div class="row mb-3">
-                            <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('Price') }}</label>
+                            <label for="generated_price" class="col-md-4 col-form-label text-md-end">{{ __('Generated Price') }}</label>
 
                             <div class="col-md-6">
-                                <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}" required>
+                                <input id="generated_price" type="text" class="form-control" value="{{ $randomPrice }}" disabled>
+                                @error('generated_price')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <!-- User Input for Price -->
+                        <div class="row mb-3">
+                            <label for="price" class="col-md-4 col-form-label text-md-end">{{ __('Enter the Price') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="price" type="number" class="form-control @error('price') is-invalid @enderror"
+                                    name="price" value="{{ old('price') }}" required>
 
                                 @error('price')
                                     <span class="invalid-feedback" role="alert">
@@ -129,6 +145,21 @@
                             </div>
                         </div>
 
+                                <input type="text" name="hobbies[]" class="form-control mb-2 @error('hobbies') is-invalid @enderror" placeholder="Enter a hobby" required />
+                                @error('hobbies')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                        <div class="row mb-3">
+                            <label for="hobbies" class="col-md-4 col-form-label text-md-end">Hobbies</label>
+                            <div class="col-md-6" id="hobbies-container">
+                                <!-- Initially one hobby input -->
+                                <input type="text" name="hobbies[]" class="form-control mb-2" placeholder="Enter a hobby" required />
+                            </div>
+                            <button type="button" id="add-hobby" class="btn btn-sm btn-secondary">Add another hobby</button>
+                        </div>
+
                         <!-- Register Button -->
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
@@ -143,4 +174,16 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Add a new hobby input field when the button is clicked
+    document.getElementById('add-hobby').addEventListener('click', function() {
+        var newHobbyInput = document.createElement('input');
+        newHobbyInput.type = 'text';
+        newHobbyInput.name = 'hobbies[]';
+        newHobbyInput.className = 'form-control mb-2';
+        newHobbyInput.placeholder = 'Enter another hobby';
+        document.getElementById('hobbies-container').appendChild(newHobbyInput);
+    });
+</script>
 @endsection

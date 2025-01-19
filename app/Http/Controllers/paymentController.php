@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+// <!-- app/http/controllers/paymentcontroller -->
 class paymentController extends Controller
 {
     public function checkPayment(Request $request){

@@ -1,5 +1,5 @@
 <?php
-
+// <!-- lang/en/pagiantion -->
 return [
 
     /*

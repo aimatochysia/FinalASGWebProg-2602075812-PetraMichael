@@ -1,3 +1,4 @@
+{{-- resources/view/payment --}}
 @extends('app')
 
 @section('content')

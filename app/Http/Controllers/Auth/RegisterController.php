@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+// <!-- app/http/controllers/auth/regis controller -->
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -48,6 +48,8 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $randomPrice = session('random_price');
+
         return Validator::make($data, [
             'username' => ['required', 'string', 'max:255'],
             'instagram_username' => ['nullable', 'string', 'max:255'],
@@ -55,7 +57,15 @@ class RegisterController extends Controller
             'gender' => ['required', 'in:male,female,other'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'mobile_number' => ['required', 'string', 'regex:/^\d{10,15}$/'],
-            'price' => ['required', 'integer', 'min:0'],
+            'price' => ['required','integer',
+                function ($attribute, $value, $fail) use ($randomPrice) {
+                    if ($value < $randomPrice) {
+                        $fail(__('The entered price is less than the required amount.'));
+                    } elseif ($value > $randomPrice) {
+                        $fail(__('The entered price is greater than the required amount.'));
+                    }},],
+            'hobbies' => ['required', 'array', 'min:2'],
+            'hobbies.*' => ['string', 'max:30'],
         ]);
     }
 
@@ -66,28 +76,52 @@ class RegisterController extends Controller
      * @return \App\Models\User
      */
     protected function create(array $data)
-    {
-        $picsumUrl = $this->fetchPicsumImageUrl();
-        return User::create([
-            'username' => $data['username'],
-            'instagram_username' => $data['instagram_username'],
-            'email' => $data['email'],
-            'gender' => $data['gender'],
-            'password' => Hash::make($data['password']),
-            'mobile_number' => $data['mobile_number'],
-            'price' => $data['price'],
-            'profile_picture' => $picsumUrl,
+{
+    // Create the user first
+    $user = User::create([
+        'username' => $data['username'],
+        'instagram_username' => $data['instagram_username'],
+        'email' => $data['email'],
+        'gender' => $data['gender'],
+        'password' => Hash::make($data['password']),
+        'mobile_number' => $data['mobile_number'],
+        'price' => $data['price'],
+        'profile_picture' => $this->fetchPicsumImageUrl(),
     ]);
+
+    // Check if hobbies exist and save them
+    if (isset($data['hobbies'])) {
+        foreach ($data['hobbies'] as $hobbyName) {
+            $user->hobbies()->create(['name' => $hobbyName]);
+        }
     }
+
+    // Return the user after hobbies have been saved
+    return $user;
+}
 
     private function fetchPicsumImageUrl()
     {
         $picsumBaseUrl = 'https://picsum.photos/200';
-        $headers = get_headers($picsumBaseUrl, 1);
+        $ch = curl_init($picsumBaseUrl);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
+        $finalUrl = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
+        curl_close($ch);
+        $urlParts = parse_url($finalUrl);
 
-        if (isset($headers['Location'])) {
-            return is_array($headers['Location']) ? end($headers['Location']) : $headers['Location'];
+        if (isset($urlParts['path'])) {
+            return 'https://picsum.photos' . $urlParts['path'];
         }
         return $picsumBaseUrl;
+    }
+
+    public function showRegistrationForm()
+    {
+        $randomPrice = rand(20000, 25000);
+        session(['random_price' => $randomPrice]);
+        return view('auth.register', ['randomPrice' => $randomPrice]);
     }
 }
